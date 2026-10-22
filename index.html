@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Honesta, asistente digital estática de WomenCEO Perú para orientar a asociadas y comunidad sobre membresías, comités, líderes, actividades y canales de atención." />
+  <title>Honesta | WomenCEO Perú</title>
+  <style>
+    :root{
+      --ink:#171515;
+      --ink-2:#2a2525;
+      --paper:#fbfaf8;
+      --paper-2:#f3f0ec;
+      --white:#ffffff;
+      --aqua:#55c8cf;
+      --aqua-2:#b8edf0;
+      --aqua-dark:#147985;
+      --rose:#ad3c65;
+      --rose-2:#f4dce5;
+      --gold:#c6a45d;
+      --muted:#6d6868;
+      --line:rgba(23,21,21,.11);
+      --shadow:0 20px 60px rgba(28,23,24,.12);
+      --shadow-soft:0 12px 35px rgba(28,23,24,.08);
+      --radius:26px;
+      --max:1180px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:var(--paper);
+      color:var(--ink);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      line-height:1.55;
+      overflow-x:hidden;
+    }
+    a{color:inherit}
+    button,input{font:inherit}
+    img{display:block;max-width:100%}
+    .container{width:min(var(--max),calc(100% - 40px));margin:0 auto}
+
+    /* ---------- NAV ---------- */
+    .nav{
+      position:fixed;inset:0 0 auto 0;z-index:80;
+      padding:14px 0;
+      background:rgba(251,250,248,.82);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      border-bottom:1px solid rgba(23,21,21,.06);
+    }
+    .nav-row{display:flex;align-items:center;justify-content:space-between;gap:22px}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+    .brand-mark{
+      width:45px;height:45px;border-radius:14px;display:grid;place-items:center;
+      background:linear-gradient(145deg,var(--ink),#3a2a2f);
+      color:white;font-weight:800;letter-spacing:-1px;box-shadow:var(--shadow-soft);
+      position:relative;overflow:hidden;
+    }
+    .brand-mark:after{content:"";position:absolute;width:30px;height:30px;border-radius:50%;background:var(--aqua);right:-13px;bottom:-13px;opacity:.85}
+    .brand-copy{display:flex;flex-direction:column;line-height:1.05}
+    .brand-copy strong{font-size:18px;letter-spacing:-.3px}
+    .brand-copy small{font-size:10px;color:var(--muted);letter-spacing:.13em;text-transform:uppercase;margin-top:4px}
+    .nav-links{display:flex;align-items:center;gap:26px;font-size:14px;font-weight:650}
+    .nav-links a{text-decoration:none;color:#494344;transition:.2s}
+    .nav-links a:hover{color:var(--rose)}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:9px;
+      border:0;border-radius:999px;padding:12px 18px;font-weight:750;text-decoration:none;cursor:pointer;
+      transition:transform .2s ease,box-shadow .2s ease,background .2s ease;
+    }
+    .btn:hover{transform:translateY(-2px)}
+    .btn-dark{background:var(--ink);color:#fff;box-shadow:0 10px 24px rgba(23,21,21,.16)}
+    .btn-soft{background:var(--white);border:1px solid var(--line);color:var(--ink)}
+    .btn-aqua{background:var(--aqua);color:#092f33;box-shadow:0 12px 30px rgba(85,200,207,.28)}
+    .mobile-menu{display:none;background:transparent;border:0;font-size:24px;cursor:pointer}
+
+    /* ---------- HERO ---------- */
+    .hero{padding:140px 0 62px;position:relative;isolation:isolate}
+    .hero:before{
+      content:"";position:absolute;width:520px;height:520px;border-radius:50%;filter:blur(10px);
+      background:radial-gradient(circle,rgba(85,200,207,.20),rgba(85,200,207,0) 70%);
+      right:-100px;top:40px;z-index:-1;
+    }
+    .hero-grid{display:grid;grid-template-columns:1.04fr .96fr;gap:52px;align-items:center}
+    .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--aqua-dark);margin-bottom:18px}
+    .eyebrow:before{content:"";width:30px;height:2px;background:var(--aqua-dark);border-radius:99px}
+    h1,h2,h3,p{margin-top:0}
+    h1{font-size:clamp(52px,7vw,88px);line-height:.92;letter-spacing:-.065em;margin-bottom:24px}
+    h1 span{display:block;color:var(--rose);font-family:Georgia,"Times New Roman",serif;font-style:italic;font-weight:500;letter-spacing:-.045em}
+    .hero-lead{font-size:19px;color:#514b4c;max-width:650px;margin-bottom:28px}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px}
+    .hero-meta{display:flex;flex-wrap:wrap;gap:16px 26px;color:var(--muted);font-size:13px}
+    .meta-item{display:flex;align-items:center;gap:8px}
+    .dot{width:7px;height:7px;border-radius:50%;background:var(--aqua)}
+
+    .hero-visual{position:relative;min-height:590px}
+    .hero-photo{
+      position:absolute;inset:0 38px 25px 0;border-radius:34px;overflow:hidden;box-shadow:var(--shadow);
+      background:#ddd;
+    }
+    .hero-photo img{width:100%;height:100%;object-fit:cover;filter:saturate(.82) contrast(1.02)}
+    .hero-photo:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(20,17,18,.54),transparent 52%)}
+    .honesta-card{
+      position:absolute;right:0;bottom:0;width:min(355px,80%);padding:22px;border-radius:26px;
+      background:rgba(255,255,255,.94);backdrop-filter:blur(14px);box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,.8)
+    }
+    .honesta-card-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+    .avatar{width:48px;height:48px;border-radius:17px;display:grid;place-items:center;background:linear-gradient(145deg,var(--rose),#6f2944);color:#fff;font-weight:900;font-size:22px;box-shadow:0 10px 22px rgba(173,60,101,.22)}
+    .status{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+    .status i{width:7px;height:7px;border-radius:50%;background:#39a86b;display:block;box-shadow:0 0 0 4px rgba(57,168,107,.11)}
+    .honesta-card strong{display:block;font-size:18px}
+    .honesta-card p{font-size:14px;color:#5d5657;margin:0}
+    .micro-badge{position:absolute;left:-24px;top:58px;background:var(--ink);color:#fff;padding:11px 14px;border-radius:999px;font-size:12px;font-weight:750;box-shadow:var(--shadow-soft)}
+
+    /* ---------- SECTIONS ---------- */
+    section{padding:82px 0}
+    .section-head{display:flex;justify-content:space-between;align-items:end;gap:25px;margin-bottom:34px}
+    .section-head h2{font-size:clamp(34px,4vw,54px);letter-spacing:-.045em;line-height:1.02;margin-bottom:0;max-width:720px}
+    .section-head p{max-width:450px;color:var(--muted);margin-bottom:3px}
+    .soft{background:var(--paper-2)}
+
+    .feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .feature{
+      background:var(--white);padding:24px;border-radius:24px;border:1px solid var(--line);min-height:205px;
+      transition:transform .25s ease,box-shadow .25s ease;
+    }
+    .feature:hover{transform:translateY(-5px);box-shadow:var(--shadow-soft)}
+    .feature-num{font-family:Georgia,serif;font-size:34px;color:var(--rose);margin-bottom:30px}
+    .feature h3{font-size:18px;margin-bottom:8px}
+    .feature p{font-size:14px;color:var(--muted);margin-bottom:0}
+
+    .story-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+    .story-copy h2{font-size:clamp(38px,5vw,62px);line-height:.98;letter-spacing:-.05em;margin-bottom:24px}
+    .story-copy p{color:#514b4c;font-size:17px}
+    .quote{
+      margin-top:25px;padding:20px 0 20px 22px;border-left:3px solid var(--aqua);font-size:17px;
+      color:#3f393a;font-family:Georgia,serif;font-style:italic;
+    }
+    .story-photos{display:grid;grid-template-columns:1fr .76fr;gap:14px;align-items:end}
+    .story-photos .pic{border-radius:26px;overflow:hidden;box-shadow:var(--shadow-soft);background:#ddd}
+    .story-photos .pic:first-child{height:480px}.story-photos .pic:last-child{height:370px;margin-bottom:28px}
+    .story-photos img{width:100%;height:100%;object-fit:cover;filter:saturate(.82)}
+
+    .path-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .path-card{border-radius:28px;padding:28px;background:var(--ink);color:#fff;position:relative;overflow:hidden;min-height:270px}
+    .path-card:nth-child(2){background:#164f55}.path-card:nth-child(3){background:#6e2c45}
+    .path-card:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;border:1px solid rgba(255,255,255,.16);right:-62px;bottom:-68px}
+    .path-card .tag{display:inline-block;padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.11);font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:38px}
+    .path-card h3{font-size:25px;line-height:1.08;margin-bottom:10px;letter-spacing:-.025em}
+    .path-card p{font-size:14px;color:rgba(255,255,255,.74);max-width:300px}
+    .path-card a{position:absolute;left:28px;bottom:26px;text-decoration:none;font-weight:800;font-size:13px}
+
+    .gallery{display:grid;grid-template-columns:1.2fr .8fr .8fr;grid-template-rows:260px 260px;gap:14px}
+    .gallery figure{margin:0;border-radius:24px;overflow:hidden;position:relative;background:#ddd}
+    .gallery figure:first-child{grid-row:1/3}
+    .gallery figure:nth-child(4){grid-column:2/4}
+    .gallery img{width:100%;height:100%;object-fit:cover;filter:saturate(.8);transition:transform .6s ease}
+    .gallery figure:hover img{transform:scale(1.035)}
+    .gallery figcaption{position:absolute;left:14px;right:14px;bottom:14px;background:rgba(23,21,21,.74);color:#fff;padding:10px 12px;border-radius:13px;font-size:12px;backdrop-filter:blur(9px)}
+
+    .trust-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:24px;overflow:hidden}
+    .trust-item{background:var(--white);padding:24px;text-align:center}
+    .trust-item strong{font-size:24px;display:block;letter-spacing:-.03em}.trust-item span{font-size:12px;color:var(--muted)}
+
+    .official-box{display:grid;grid-template-columns:.95fr 1.05fr;gap:24px;align-items:stretch}
+    .official-copy{background:var(--ink);color:#fff;padding:34px;border-radius:28px}
+    .official-copy h3{font-size:30px;line-height:1.05;margin-bottom:14px}.official-copy p{color:rgba(255,255,255,.72)}
+    .sources{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .source-link{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:18px;border:1px solid var(--line);border-radius:18px;background:#fff;text-decoration:none;font-weight:760;transition:.2s}
+    .source-link:hover{transform:translateY(-2px);box-shadow:var(--shadow-soft)}
+    .source-link small{display:block;color:var(--muted);font-weight:500;margin-top:3px}
+    .source-link span:last-child{font-size:20px;color:var(--rose)}
+
+    /* ---------- CTA ---------- */
+    .cta{
+      padding:42px;border-radius:34px;background:linear-gradient(120deg,var(--ink),#35242a 65%,#184c52);color:#fff;
+      display:flex;justify-content:space-between;align-items:center;gap:24px;position:relative;overflow:hidden;
+    }
+    .cta:before{content:"";position:absolute;width:250px;height:250px;border:1px solid rgba(255,255,255,.1);border-radius:50%;right:-50px;top:-100px}
+    .cta h2{font-size:clamp(32px,4vw,48px);letter-spacing:-.045em;margin-bottom:10px}.cta p{color:rgba(255,255,255,.72);margin:0;max-width:680px}
+
+    footer{padding:42px 0 120px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+    .footer-row{display:flex;justify-content:space-between;gap:24px;align-items:flex-start}
+    .footer-note{max-width:700px}.footer-links{display:flex;gap:16px;flex-wrap:wrap}.footer-links a{text-decoration:none;font-weight:700;color:#403a3b}
+
+    /* ---------- CHAT ---------- */
+    .chat-launcher{
+      position:fixed;right:24px;bottom:24px;z-index:100;width:64px;height:64px;border-radius:22px;border:0;cursor:pointer;
+      background:linear-gradient(145deg,var(--rose),#7c2b48);color:white;box-shadow:0 16px 38px rgba(99,36,58,.3);
+      display:grid;place-items:center;transition:.25s;
+    }
+    .chat-launcher:hover{transform:translateY(-4px) scale(1.02)}
+    .chat-launcher b{font-size:25px}.chat-launcher:after{content:"";position:absolute;inset:-6px;border:1px solid rgba(173,60,101,.27);border-radius:27px;animation:pulse 2.4s infinite}
+    @keyframes pulse{0%,100%{transform:scale(.96);opacity:.2}50%{transform:scale(1.04);opacity:.6}}
+    .chat-window{
+      position:fixed;right:24px;bottom:100px;z-index:99;width:min(390px,calc(100vw - 28px));height:min(650px,calc(100vh - 130px));
+      background:#fff;border:1px solid var(--line);border-radius:28px;box-shadow:0 28px 80px rgba(20,16,17,.24);overflow:hidden;
+      display:none;grid-template-rows:auto auto 1fr auto;transform-origin:bottom right;
+    }
+    .chat-window.open{display:grid;animation:pop .22s ease-out}
+    @keyframes pop{from{opacity:0;transform:scale(.96) translateY(10px)}to{opacity:1;transform:none}}
+    .chat-head{padding:18px 18px 15px;background:linear-gradient(120deg,#251e20,#422d34);color:#fff;display:flex;align-items:center;gap:12px}
+    .chat-head .avatar{width:42px;height:42px;border-radius:14px;font-size:19px}
+    .chat-head strong{font-size:15px}.chat-head small{display:block;color:rgba(255,255,255,.7);font-size:11px;margin-top:2px}
+    .chat-close{margin-left:auto;background:rgba(255,255,255,.1);border:0;color:#fff;width:34px;height:34px;border-radius:12px;cursor:pointer}
+    .quick{display:flex;gap:7px;padding:10px 12px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}.quick::-webkit-scrollbar{display:none}
+    .chip{white-space:nowrap;border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:750;cursor:pointer;color:#514a4b}.chip:hover{border-color:var(--aqua);background:#f4fcfc}
+    .messages{padding:15px;overflow-y:auto;background:linear-gradient(180deg,#fbfaf8,#f7f4f1);scroll-behavior:smooth}
+    .msg{display:flex;margin:0 0 10px;animation:fadeup .18s ease-out}.msg.user{justify-content:flex-end}.msg.bot{justify-content:flex-start}
+    @keyframes fadeup{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+    .bubble{max-width:84%;padding:10px 12px;border-radius:16px;font-size:13px;line-height:1.45}
+    .user .bubble{background:var(--ink);color:#fff;border-bottom-right-radius:5px}.bot .bubble{background:#fff;border:1px solid var(--line);color:#3f393a;border-bottom-left-radius:5px;box-shadow:0 5px 16px rgba(23,21,21,.04)}
+    .bubble a{font-weight:800;color:var(--aqua-dark)}
+    .bubble .mini-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+    .bubble .mini-actions button,.bubble .mini-actions a{border:1px solid var(--line);background:#fbfaf8;border-radius:999px;padding:6px 9px;font-size:11px;text-decoration:none;color:#4b4445;cursor:pointer;font-weight:700}
+    .chat-input{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line);background:#fff}.chat-input input{flex:1;border:1px solid var(--line);border-radius:15px;padding:11px 12px;outline:none;font-size:13px}.chat-input input:focus{border-color:var(--aqua-dark);box-shadow:0 0 0 3px rgba(85,200,207,.12)}
+    .send{width:43px;border:0;border-radius:14px;background:var(--aqua);cursor:pointer;font-weight:900;color:#0b383b}
+
+    /* ---------- Modal ---------- */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(20,17,18,.55);backdrop-filter:blur(8px);z-index:120;display:none;place-items:center;padding:20px}
+    .modal-backdrop.open{display:grid}.modal{width:min(580px,100%);background:#fff;border-radius:28px;padding:28px;box-shadow:0 30px 90px rgba(0,0,0,.24)}
+    .modal-top{display:flex;justify-content:space-between;gap:18px}.modal h3{font-size:28px;letter-spacing:-.035em;margin-bottom:8px}.modal p{color:var(--muted);font-size:14px}.modal-close{border:1px solid var(--line);background:#fff;border-radius:12px;width:38px;height:38px;cursor:pointer}.alert{padding:14px;border-radius:16px;background:#fff7e9;border:1px solid #efd9aa;font-size:12px;color:#695536;margin:15px 0}.modal-actions{display:flex;gap:10px;flex-wrap:wrap}.modal-actions a{text-decoration:none}
+
+    .reveal{opacity:0;transform:translateY(16px);transition:.65s ease}.reveal.on{opacity:1;transform:none}
+
+    @media (max-width:980px){
+      .nav-links{display:none}.mobile-menu{display:block}.hero-grid,.story-grid,.official-box{grid-template-columns:1fr}.hero-visual{min-height:540px}.feature-grid{grid-template-columns:1fr 1fr}.path-grid{grid-template-columns:1fr}.gallery{grid-template-columns:1fr 1fr;grid-template-rows:340px 220px 220px}.gallery figure:first-child{grid-row:auto;grid-column:1/3}.gallery figure:nth-child(4){grid-column:1/3}.trust-strip{grid-template-columns:1fr 1fr}.cta{align-items:flex-start;flex-direction:column}.footer-row{flex-direction:column}}
+    @media (max-width:640px){
+      .container{width:min(100% - 26px,var(--max))}.hero{padding-top:118px}.hero-grid{gap:30px}.hero-visual{min-height:470px}.hero-photo{inset:0 0 46px 0}.honesta-card{width:90%;right:5%;padding:18px}.micro-badge{left:10px;top:18px}.feature-grid,.sources{grid-template-columns:1fr}.section-head{align-items:flex-start;flex-direction:column}.story-photos{grid-template-columns:1fr 1fr}.story-photos .pic:first-child{height:360px}.story-photos .pic:last-child{height:300px}.gallery{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px}.gallery figure{min-width:82%;height:320px!important;scroll-snap-align:start}.trust-strip{grid-template-columns:1fr}.cta{padding:28px}.chat-window{right:14px;bottom:90px}.chat-launcher{right:14px;bottom:14px}.brand-copy small{display:none}}
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="Navegación principal">
+    <div class="container nav-row">
+      <a class="brand" href="#inicio" aria-label="Honesta - inicio">
+        <span class="brand-mark">H</span>
+        <span class="brand-copy"><strong>Honesta</strong><small>por WomenCEO Perú</small></span>
+      </a>
+      <div class="nav-links">
+        <a href="#que-es">Qué es</a>
+        <a href="#ayuda">Cómo ayuda</a>
+        <a href="#comunidad">Comunidad</a>
+        <a href="#fuentes">Fuentes oficiales</a>
+        <button class="btn btn-dark" onclick="openChat()">Hablar con Honesta</button>
+      </div>
+      <button class="mobile-menu" onclick="openChat()" aria-label="Abrir Honesta">✦</button>
+    </div>
+  </nav>
+
+  <header id="inicio" class="hero">
+    <div class="container hero-grid">
+      <div class="reveal">
+        <div class="eyebrow">Una iniciativa de WomenCEO Perú</div>
+        <h1>Una voz clara para <span>nuestra comunidad.</span></h1>
+        <p class="hero-lead">Honesta es una propuesta de asistente digital cercana y ejecutiva para orientar a nuevas asociadas y a la comunidad sobre WomenCEO Perú, comités, líderes, actividades, membresías y canales de atención.</p>
+        <div class="hero-actions">
+          <button class="btn btn-dark" onclick="openChat('Hola, quiero conocer Honesta')">Probar Honesta <span>↗</span></button>
+          <a class="btn btn-soft" href="https://womenceoperu.org/" target="_blank" rel="noopener">Visitar WomenCEO Perú</a>
+        </div>
+        <div class="hero-meta">
+          <span class="meta-item"><i class="dot"></i> Chat estático, sin API</span>
+          <span class="meta-item"><i class="dot"></i> Respuestas con información pública WCP</span>
+          <span class="meta-item"><i class="dot"></i> Escalamiento humano para casos sensibles</span>
+        </div>
+      </div>
+      <div class="hero-visual reveal">
+        <div class="hero-photo">
+          <img src="https://res.cloudinary.com/jerrick/image/upload/d_642250b563292b35f27461a7.png%2Cf_jpg%2Cfl_progressive%2Cq_auto%2Cw_1024/696e153071b95d001dd762d2.jpg" alt="Mujeres ejecutivas reunidas en una mesa de trabajo" onerror="fallbackImage(this)" />
+        </div>
+        <span class="micro-badge">Liderazgo auténtico · Cercanía · Orientación</span>
+        <aside class="honesta-card">
+          <div class="honesta-card-top">
+            <div class="avatar">H</div>
+            <div><strong>Hola, soy Honesta.</strong><span class="status"><i></i> Asistente disponible</span></div>
+          </div>
+          <p>Puedo ayudarte a encontrar información sobre la comunidad WCP y, cuando el tema requiera confidencialidad o validación humana, te indico el canal adecuado.</p>
+        </aside>
+      </div>
+    </div>
+  </header>
+
+  <section id="que-es" class="soft">
+    <div class="container">
+      <div class="section-head reveal">
+        <div><div class="eyebrow">El concepto</div><h2>Una presencia digital con identidad, propósito y límites claros.</h2></div>
+        <p>Honesta prioriza las consultas más frecuentes y deriva los casos sensibles a atención humana, con mensajes transparentes sobre privacidad y alcance.</p>
+      </div>
+      <div class="feature-grid">
+        <article class="feature reveal"><div class="feature-num">01</div><h3>Información WCP</h3><p>Propósito, misión, visión, valores, directorio, comités y comunidad.</p></article>
+        <article class="feature reveal"><div class="feature-num">02</div><h3>Membresías</h3><p>Requisitos públicos de incorporación, pasos y orientación para asociadas.</p></article>
+        <article class="feature reveal"><div class="feature-num">03</div><h3>Actividades</h3><p>Acceso rápido al portal oficial de eventos, programas, podcast y publicaciones.</p></article>
+        <article class="feature reveal"><div class="feature-num">04</div><h3>Canal sensible</h3><p>Orientación para quejas o denuncias, derivando a atención humana sin almacenar el relato en el chatbot.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="ayuda">
+    <div class="container story-grid">
+      <div class="story-copy reveal">
+        <div class="eyebrow">La voz de Honesta</div>
+        <h2>Ejecutiva, cercana, respetuosa y transparente.</h2>
+        <p>Honesta está diseñada para conversar con un lenguaje simple, profesional y empático. Responde únicamente sobre temas definidos en su base estática y evita inventar información cuando un dato no está cargado.</p>
+        <div class="quote">“Te acompaño a encontrar la información correcta y a llegar al canal adecuado.”</div>
+        <div style="margin-top:24px"><button class="btn btn-aqua" onclick="openChat('¿Qué puedes hacer por mí?')">Ver capacidades</button></div>
+      </div>
+      <div class="story-photos reveal">
+        <div class="pic"><img src="https://igpp.org.uk/storage/app/uploads/public/68f/217/d39/thumb_8033_1920_0_0_0_crop.jpg" alt="Mujeres profesionales en reunión de liderazgo" loading="lazy" onerror="fallbackImage(this)"></div>
+        <div class="pic"><img src="https://www.greatplacetowork.com.pe/images/certification/companies/coface/foto-04.jpg" alt="Equipo de mujeres profesionales" loading="lazy" onerror="fallbackImage(this)"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="soft">
+    <div class="container">
+      <div class="section-head reveal">
+        <div><div class="eyebrow">Rutas rápidas</div><h2>Lo que una asociada puede resolver en pocos pasos.</h2></div>
+        <p>Las rutas se apoyan en información oficial pública de WomenCEO Perú. La información bancaria de membresías queda bloqueada hasta que WCP cargue cuentas expresamente verificadas para ese fin.</p>
+      </div>
+      <div class="path-grid">
+        <article class="path-card reveal"><span class="tag">Comunidad</span><h3>Quiero ser asociada</h3><p>Conoce los requisitos de incorporación y accede al canal oficial de inscripción.</p><a href="https://womenceoperu.org/unete/" target="_blank" rel="noopener">Ir a Únete ↗</a></article>
+        <article class="path-card reveal"><span class="tag">Organización</span><h3>Comités y líderes</h3><p>Consulta las áreas de trabajo y quiénes lideran los comités publicados por WCP.</p><a href="https://womenceoperu.org/lideres-de-comite/" target="_blank" rel="noopener">Ver comités ↗</a></article>
+        <article class="path-card reveal"><span class="tag">Confidencialidad</span><h3>Queja o denuncia</h3><p>Honesta orienta y te lleva a atención humana. El chatbot no almacena relatos ni adjuntos.</p><a href="#" onclick="event.preventDefault();openSensitiveModal()">Abrir canal ↗</a></article>
+      </div>
+    </div>
+  </section>
+
+  <section id="comunidad">
+    <div class="container">
+      <div class="section-head reveal">
+        <div><div class="eyebrow">Mujeres que lideran</div><h2>Una experiencia visual centrada en liderazgo, colaboración y red.</h2></div>
+        <p>El concepto visual combina fotografía ejecutiva, espacios amplios, tipografía editorial y acentos inspirados en la identidad pública de WomenCEO Perú.</p>
+      </div>
+      <div class="gallery reveal">
+        <figure><img src="https://www.poderosa.com.pe/Content/noticias/carrusel/poderosa-participo-en-el-conversatorio-de-women-ceo-sobre-liderazgo-02.jpg" alt="Panel de liderazgo con mujeres ejecutivas" loading="lazy" onerror="fallbackImage(this)"><figcaption>Liderazgo que se comparte</figcaption></figure>
+        <figure><img src="https://kpmg.com/content/dam/kpmg/ng/images/women-in-board-meeting.jpg" alt="Mujeres en discusión de directorio" loading="lazy" onerror="fallbackImage(this)"><figcaption>Gobierno y decisión</figcaption></figure>
+        <figure><img src="https://www.greatplacetowork.com.pe/images/certification/companies/coface/foto-04.jpg" alt="Mujeres profesionales en un entorno de trabajo" loading="lazy" onerror="fallbackImage(this)"><figcaption>Comunidad y conexión</figcaption></figure>
+        <figure><img src="https://infonegocios.info/images/resize/42251-1600x900.webp" alt="Reunión ejecutiva con mujeres líderes" loading="lazy" onerror="fallbackImage(this)"><figcaption>Redes de alto impacto</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="soft">
+    <div class="container">
+      <div class="trust-strip reveal">
+        <div class="trust-item"><strong>2016</strong><span>Año de fundación indicado por WCP</span></div>
+        <div class="trust-item"><strong>2,500+</strong><span>Miembros de la comunidad reportados por WCP</span></div>
+        <div class="trust-item"><strong>30% al 2030</strong><span>Iniciativa Camino a la Paridad</span></div>
+        <div class="trust-item"><strong>7 valores</strong><span>Respeto, integridad, transparencia y más</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="fuentes">
+    <div class="container official-box">
+      <div class="official-copy reveal">
+        <div class="eyebrow" style="color:var(--aqua-2)">Transparencia</div>
+        <h3>Información pública, enlaces oficiales.</h3>
+        <p>El contenido informativo de Honesta se construyó con páginas públicas de WomenCEO Perú consultadas el 21 de septiembre de 2026. Si una respuesta no está cargada o no puede validarse, Honesta lo indica y deriva al canal oficial.</p>
+        <p style="font-size:12px;margin-top:22px">Importante: Honesta no incluye cuentas bancarias para renovación de membresía porque no se identificó una cuenta oficial pública validada específicamente para ese propósito.</p>
+      </div>
+      <div class="sources reveal">
+        <a class="source-link" href="https://womenceoperu.org/acerca-de-wceo-peru/" target="_blank" rel="noopener"><span>Cultura WCP<small>Misión, visión, valores y comunidad</small></span><span>↗</span></a>
+        <a class="source-link" href="https://womenceoperu.org/miembros-del-directorio/" target="_blank" rel="noopener"><span>Directorio<small>Presidenta y miembros del directorio</small></span><span>↗</span></a>
+        <a class="source-link" href="https://womenceoperu.org/lideres-de-comite/" target="_blank" rel="noopener"><span>Comités<small>Líderes y áreas de trabajo</small></span><span>↗</span></a>
+        <a class="source-link" href="https://womenceoperu.org/unete/" target="_blank" rel="noopener"><span>Únete<small>Requisitos y proceso de incorporación</small></span><span>↗</span></a>
+        <a class="source-link" href="https://eventos.womenceoperu.org/" target="_blank" rel="noopener"><span>Eventos<small>Agenda y actividades de la comunidad</small></span><span>↗</span></a>
+        <a class="source-link" href="https://womenceoperu.org/" target="_blank" rel="noopener"><span>Portal principal<small>Programas, publicaciones y podcast</small></span><span>↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:20px">
+    <div class="container cta reveal">
+      <div><h2>Conoce a Honesta en acción.</h2><p>Prueba preguntas sobre asociadas, requisitos, directorio, comités, valores, programas, eventos, podcast, 30% al 2030 o el canal de atención sensible.</p></div>
+      <button class="btn btn-aqua" onclick="openChat('Quiero ver todas tus opciones')">Abrir chatbot</button>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-row">
+      <div class="footer-note"><strong style="color:var(--ink)">Honesta · Asistente digital</strong><br>Iniciativa de WomenCEO Perú y Cecilia Flores, Presidenta. Honesta brinda orientación e información institucional y deriva los casos que requieren atención humana a los canales correspondientes.</div>
+      <div class="footer-links"><a href="https://womenceoperu.org/" target="_blank" rel="noopener">WomenCEO Perú</a><a href="https://eventos.womenceoperu.org/" target="_blank" rel="noopener">Eventos</a><a href="mailto:aportal@womenceoperu.org">Tu opinión importa</a></div>
+    </div>
+  </footer>
+
+  <!-- CHATBOT ESTÁTICO -->
+  <button class="chat-launcher" id="chatLauncher" onclick="toggleChat()" aria-label="Abrir chatbot Honesta"><b>H</b></button>
+  <aside class="chat-window" id="chatWindow" aria-label="Chatbot Honesta">
+    <div class="chat-head"><div class="avatar">H</div><div><strong>Honesta</strong><small>Asistente estática de WomenCEO Perú</small></div><button class="chat-close" onclick="toggleChat()" aria-label="Cerrar">×</button></div>
+    <div class="quick">
+      <button class="chip" onclick="ask('Quiero ser asociada')">Ser asociada</button>
+      <button class="chip" onclick="ask('Comités y líderes')">Comités</button>
+      <button class="chip" onclick="ask('Membresía y renovación')">Membresía</button>
+      <button class="chip" onclick="ask('Queja o denuncia')">Canal sensible</button>
+      <button class="chip" onclick="ask('Eventos')">Eventos</button>
+    </div>
+    <div class="messages" id="messages"></div>
+    <form class="chat-input" onsubmit="sendMessage(event)"><input id="chatInput" autocomplete="off" placeholder="Escribe tu consulta…" aria-label="Escribe tu consulta"><button class="send" type="submit" aria-label="Enviar">➜</button></form>
+  </aside>
+
+  <!-- MODAL CANAL SENSIBLE -->
+  <div class="modal-backdrop" id="sensitiveModal" role="dialog" aria-modal="true" aria-labelledby="sensitiveTitle">
+    <div class="modal">
+      <div class="modal-top"><div><div class="eyebrow">Atención humana</div><h3 id="sensitiveTitle">Canal para temas sensibles</h3></div><button class="modal-close" onclick="closeSensitiveModal()">×</button></div>
+      <p>Si deseas comunicar una queja, denuncia o situación sensible, Honesta está diseñada para derivarte a una persona y no para recibir el detalle del caso.</p>
+      <div class="alert"><strong>No ingreses información sensible en el chatbot.</strong> El chatbot funciona únicamente en tu navegador y no cuenta con un backend seguro para gestionar denuncias, evidencias o datos personales.</div>
+      <div class="modal-actions">
+        <a class="btn btn-dark" href="mailto:aportal@womenceoperu.org?subject=Solicitud%20de%20orientaci%C3%B3n%20confidencial%20-%20WomenCEO%20Per%C3%BA&body=Hola%2C%20quisiera%20solicitar%20orientaci%C3%B3n%20para%20presentar%20un%20reporte%20de%20manera%20confidencial.%20Agradecer%C3%A9%20me%20indiquen%20el%20procedimiento%20y%20canal%20correspondiente.">Solicitar orientación por correo</a>
+        <a class="btn btn-soft" href="https://womenceoperu.org/" target="_blank" rel="noopener">Ir al sitio oficial</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------------------- Utilidades visuales ----------------------
+    function fallbackImage(img){
+      const parent=img.parentElement;
+      img.style.display='none';
+      parent.style.background='linear-gradient(135deg,#203c41,#7b3150)';
+      parent.style.position='relative';
+      if(!parent.querySelector('.fallback-label')){
+        const s=document.createElement('span');
+        s.className='fallback-label';
+        s.textContent='WomenCEO Perú · Liderazgo auténtico';
+        s.style.cssText='position:absolute;inset:auto 18px 18px 18px;color:white;font-weight:800;font-size:14px;';
+        parent.appendChild(s);
+      }
+    }
+    const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:.1});
+    document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+    // ---------------------- Base de conocimiento estática ----------------------
+    const LINKS={
+      home:'https://womenceoperu.org/',
+      culture:'https://womenceoperu.org/acerca-de-wceo-peru/',
+      board:'https://womenceoperu.org/miembros-del-directorio/',
+      committees:'https://womenceoperu.org/lideres-de-comite/',
+      join:'https://womenceoperu.org/unete/',
+      events:'https://eventos.womenceoperu.org/'
+    };
+
+    const replies=[
+      {keys:['hola','buenos dias','buenas tardes','buenas noches','hey'],text:`¡Hola! Soy <strong>Honesta</strong>, el asistente digital de WomenCEO Perú. Puedo orientarte sobre la comunidad, incorporación, comités, directorio, actividades, programas y canales de atención. ¿Qué necesitas?`},
+      {keys:['que puedes hacer','opciones','ayuda','todo'],text:`Puedo ayudarte con: <strong>qué es WomenCEO Perú</strong>, misión y valores, requisitos para asociarte, directorio, comités, programas, eventos, podcast, 30% al 2030, membresía y orientación para temas sensibles.<div class="mini-actions"><button onclick="ask('Quiero ser asociada')">Ser asociada</button><button onclick="ask('Directorio')">Directorio</button><button onclick="ask('Comités')">Comités</button><button onclick="ask('Queja o denuncia')">Canal sensible</button></div>`},
+      {keys:['que es honesta','honesta'],text:`Honesta es una propuesta de asistente digital para WomenCEO Perú. Esta versión es <strong>estática</strong>: responde con una base de información precargada y no consulta sistemas internos ni almacena conversaciones.`},
+      {keys:['que es womenceo','women ceo peru','wcp','organizacion'],text:`WomenCEO Perú se presenta como una asociación sin fines de lucro que promueve el liderazgo de las mujeres en espacios de toma de decisión de organizaciones públicas y privadas, con enfoque en diversidad e inclusión. <div class="mini-actions"><a href="${LINKS.culture}" target="_blank">Ver cultura WCP ↗</a></div>`},
+      {keys:['mision'],text:`La misión publicada por WCP se orienta a generar valor en la sociedad peruana y las organizaciones promoviendo diversidad en el liderazgo, buen gobierno corporativo, generación de conocimiento, sostenibilidad, innovación y ética. <div class="mini-actions"><a href="${LINKS.culture}" target="_blank">Fuente oficial ↗</a></div>`},
+      {keys:['vision'],text:`La visión publicada por WCP plantea que, al 2030, la organización sea reconocida por acelerar cambios estructurales y culturales a favor de la diversidad y la igualdad de oportunidades, comenzando por los espacios de toma de decisión. <div class="mini-actions"><a href="${LINKS.culture}" target="_blank">Fuente oficial ↗</a></div>`},
+      {keys:['valores','valor'],text:`Los valores publicados por WCP son: <strong>respeto de derechos, integridad, transparencia, honestidad, compromiso, trabajo en equipo y sororidad</strong>. <div class="mini-actions"><a href="${LINKS.culture}" target="_blank">Ver cultura WCP ↗</a></div>`},
+      {keys:['comunidad','cuantos miembros','miembros'],text:`WCP informa que su comunidad supera los <strong>2,500 miembros</strong> e incluye asociadas y asociados, corporaciones, organizaciones, miembros de la Plataforma de Directores Perú, alumnas y exalumnas. <div class="mini-actions"><a href="${LINKS.culture}" target="_blank">Ver información ↗</a></div>`},
+      {keys:['asociada','asociarme','unirme','quiero ingresar','quiero ser parte','incorporacion','incorporarme'],text:`Para incorporarte como asociada(o), WCP publica como requisito tener al menos <strong>10 años de experiencia comprobada</strong> en puestos directivos o de alta dirección, en sector público o privado; alternativamente, contar con reconocida experiencia académica y/o de especialidad. <div class="mini-actions"><a href="${LINKS.join}" target="_blank">Ver requisitos y formulario ↗</a></div>`},
+      {keys:['pasos para asociarme','proceso de incorporacion','como me inscribo','inscripcion'],text:`El proceso público de WCP indica estos pasos: completar el formulario, recibir la carta de aceptación, efectuar el pago de membresía anual, completar el formulario de nuevas asociadas adjuntando el voucher y luego recibir el número de registro. WCP también menciona una ceremonia anual de incorporación. <div class="mini-actions"><a href="${LINKS.join}" target="_blank">Ir a Únete ↗</a></div>`},
+      {keys:['membresia','renovacion','renovar'],text:`Puedo orientarte sobre incorporación, pero <strong>no tengo cargado un procedimiento oficial verificado para renovación de membresía</strong>. Para evitar información desactualizada, te recomiendo confirmarlo con WomenCEO Perú por su canal oficial. <div class="mini-actions"><a href="mailto:aportal@womenceoperu.org?subject=Consulta%20sobre%20renovaci%C3%B3n%20de%20membres%C3%ADa">Consultar renovación</a><a href="${LINKS.home}" target="_blank">Sitio oficial ↗</a></div>`},
+      {keys:['cuenta bancaria','cuentas bancarias','banco','cci','transferencia','pago membresia','pagar membresia'],text:`No tengo cargada una <strong>cuenta bancaria oficial verificada específicamente para membresías o renovaciones</strong>. No te recomendaré una cuenta hasta que WCP la configure y valide expresamente en esta herramienta. <div class="mini-actions"><a href="mailto:aportal@womenceoperu.org?subject=Validaci%C3%B3n%20de%20datos%20de%20pago%20de%20membres%C3%ADa">Solicitar datos oficiales</a></div>`},
+      {keys:['directorio','directoras','presidenta'],text:`El directorio publicado por WCP incluye a <strong>Cecilia Flores</strong> como Presidenta, junto con Juana Mollo, Rocío Samaniego, Carmen Moscoso, Patricia Merino, Beatrice Avolio, Luciana Olivares, Rocío Portugal, Carolina Palacios y María Fe García Yrigoyen. <div class="mini-actions"><a href="${LINKS.board}" target="_blank">Ver directorio oficial ↗</a></div>`},
+      {keys:['cecilia flores','cecilia'],text:`Cecilia Flores figura como <strong>Presidenta</strong> en el directorio público de WomenCEO Perú. <div class="mini-actions"><a href="${LINKS.board}" target="_blank">Ver directorio ↗</a></div>`},
+      {keys:['comite','comites','lideres de comite'],text:`WCP publica comités y áreas como Bienestar, Comunicaciones, Dirección Estratégica, Emprende Women, Eventos, Finanzas, Formación, Gobierno Corporativo, Mentoring, Marketing & Comercial, Mujer en Energía, Petróleo y Minería, Legal & Compliance, Auditoría y Gestión de Riesgos, Mujeres en Sector Público, Plataforma de Directores, Proyectos Especiales, Women in Health, Talento & Cultura, Sostenibilidad, Incorporaciones, Fidelización y Contactándonos. <div class="mini-actions"><a href="${LINKS.committees}" target="_blank">Ver líderes de comité ↗</a></div>`},
+      {keys:['bienestar'],text:`En la página pública de líderes de comité, <strong>Cecilia Flores</strong> aparece asociada a Bienestar. Puedes revisar el listado vigente directamente en WCP. <div class="mini-actions"><a href="${LINKS.committees}" target="_blank">Ver comités ↗</a></div>`},
+      {keys:['formacion'],text:`En el listado público, <strong>Rocío Ardiles</strong> aparece asociada a Formación. Para validar cambios posteriores, consulta el directorio de comités publicado por WCP. <div class="mini-actions"><a href="${LINKS.committees}" target="_blank">Ver comités ↗</a></div>`},
+      {keys:['mentoring','mentoria'],text:`En el listado público, <strong>Mariella del Barco</strong> aparece asociada a Mentoring. <div class="mini-actions"><a href="${LINKS.committees}" target="_blank">Ver comités ↗</a></div>`},
+      {keys:['sostenibilidad'],text:`En el listado público, <strong>Lorena Dibos</strong> aparece asociada a Sostenibilidad. <div class="mini-actions"><a href="${LINKS.committees}" target="_blank">Ver comités ↗</a></div>`},
+      {keys:['talento','cultura'],text:`En el listado público, <strong>Maria Julia Caffaro</strong> aparece asociada a Talento & Cultura. Para cultura institucional WCP, también puedo contarte sobre misión, visión y valores. <div class="mini-actions"><a href="${LINKS.committees}" target="_blank">Ver comités ↗</a></div>`},
+      {keys:['programas','cursos','formacion ejecutiva'],text:`WCP publica programas como El ABC de la diversidad e inclusión, Board Room Experience, Dress & Code WCP, Finanzas para Emprendedores, Gobernanza para Trascender, Women Board Member Program, Liderazgo para Mujeres en Minería, Women Development Program, Women in Health y Women CEO Program. <div class="mini-actions"><a href="${LINKS.home}" target="_blank">Ver programas ↗</a></div>`},
+      {keys:['women ceo program'],text:`WomenCEO Perú mantiene un programa de formación para mujeres ejecutivas orientado a fortalecer liderazgo, gestión y acceso a posiciones de alta dirección. Te recomiendo revisar la edición vigente directamente en el portal oficial. <div class="mini-actions"><a href="https://womenceoperu.org/women-ceo-program/" target="_blank">Ver programa ↗</a></div>`},
+      {keys:['eventos','actividades','agenda','proximos eventos'],text:`La agenda cambia con frecuencia. Para información vigente, consulta el <strong>portal oficial de eventos de WomenCEO Perú</strong>. <div class="mini-actions"><a href="${LINKS.events}" target="_blank">Ver eventos ↗</a></div>`},
+      {keys:['podcast','women si hoy'],text:`<strong>Women Sí Hoy</strong> es el podcast de WomenCEO Perú. WCP lo presenta como un espacio de historias, reflexiones e inspiración de su comunidad y señala que es conducido por Cecilia Flores Castañón. <div class="mini-actions"><a href="${LINKS.home}" target="_blank">Ir al portal WCP ↗</a></div>`},
+      {keys:['30%','30 al 2030','paridad'],text:`<strong>30% al 2030 · Camino a la Paridad</strong> es una iniciativa de WCP que promueve no menos de 30% de participación de mujeres en espacios de toma de decisión. <div class="mini-actions"><a href="${LINKS.home}" target="_blank">Conocer la iniciativa ↗</a></div>`},
+      {keys:['estudios','publicaciones','repositorio','articulos'],text:`WCP cuenta con un repositorio público que reúne estudios, artículos de asociadas, boletines e iniciativas de inspiración. Puedes acceder desde el portal principal. <div class="mini-actions"><a href="${LINKS.home}" target="_blank">Ir al repositorio ↗</a></div>`},
+      {keys:['queja','denuncia','acoso','hostigamiento','etica','conducta','reclamo'],text:`Para una queja, denuncia o situación sensible, prefiero derivarte a <strong>atención humana</strong>. El chatbot no está configurado para recibir detalles, documentos ni datos sensibles. <div class="mini-actions"><button onclick="openSensitiveModal()">Abrir canal sensible</button><a href="mailto:aportal@womenceoperu.org?subject=Solicitud%20de%20orientaci%C3%B3n%20confidencial">Escribir a WCP</a></div>`},
+      {keys:['privacidad','datos personales','guarda mis datos','guardas'],text:`Esta versión de Honesta funciona en el navegador y <strong>no tiene backend ni base de datos</strong>: las respuestas se generan con reglas JavaScript locales. Aun así, evita escribir información sensible porque este chatbot no es un canal formal de denuncias.`},
+      {keys:['contacto','correo','hablar con alguien','persona','humano'],text:`Puedes usar el correo público <strong>aportal@womenceoperu.org</strong>, mostrado por WCP bajo “Tu opinión importa”. También puedes ingresar al portal principal para ubicar sus demás canales. <div class="mini-actions"><a href="mailto:aportal@womenceoperu.org">Abrir correo</a><a href="${LINKS.home}" target="_blank">Sitio oficial ↗</a></div>`},
+      {keys:['gracias','muchas gracias'],text:`Con gusto. Si quieres, también puedo mostrarte información sobre <strong>membresías, comités, directorio, actividades o el canal de atención sensible</strong>.`}
+    ];
+
+    function normalize(t){return t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim()}
+    function getReply(input){
+      const q=normalize(input);
+      let best=null,score=0;
+      for(const r of replies){
+        let s=0;
+        for(const k of r.keys){if(q.includes(normalize(k))) s+=normalize(k).split(' ').length+1;}
+        if(s>score){score=s;best=r;}
+      }
+      return best ? best.text : `No tengo una respuesta verificada para esa consulta. Puedo ayudarte con <strong>incorporación, membresía, directorio, comités, programas, eventos, podcast, 30% al 2030 o canales de atención</strong>.<div class="mini-actions"><button onclick="ask('Quiero ver todas tus opciones')">Ver opciones</button><a href="${LINKS.home}" target="_blank">Consultar WCP ↗</a></div>`;
+    }
+
+    const chat=document.getElementById('chatWindow'),messages=document.getElementById('messages'),input=document.getElementById('chatInput');
+    let welcomed=false;
+    function toggleChat(){chat.classList.toggle('open');if(chat.classList.contains('open')){if(!welcomed){bot(`Hola. Soy <strong>Honesta</strong>. Estoy aquí para orientarte con información pública de WomenCEO Perú. Puedes empezar preguntándome por membresías, comités, actividades o el canal de atención sensible.`);welcomed=true;}setTimeout(()=>input.focus(),100)}}
+    function openChat(prefill){if(!chat.classList.contains('open'))toggleChat();if(prefill)setTimeout(()=>ask(prefill),160)}
+    function user(text){const row=document.createElement('div');row.className='msg user';row.innerHTML=`<div class="bubble"></div>`;row.querySelector('.bubble').textContent=text;messages.appendChild(row);scrollChat()}
+    function bot(html){const row=document.createElement('div');row.className='msg bot';row.innerHTML=`<div class="bubble">${html}</div>`;messages.appendChild(row);scrollChat()}
+    function scrollChat(){setTimeout(()=>messages.scrollTop=messages.scrollHeight,30)}
+    function ask(text){if(!chat.classList.contains('open'))openChat();user(text);setTimeout(()=>bot(getReply(text)),260)}
+    function sendMessage(e){e.preventDefault();const t=input.value.trim();if(!t)return;input.value='';ask(t)}
+
+    function openSensitiveModal(){document.getElementById('sensitiveModal').classList.add('open')}
+    function closeSensitiveModal(){document.getElementById('sensitiveModal').classList.remove('open')}
+    document.getElementById('sensitiveModal').addEventListener('click',e=>{if(e.target.id==='sensitiveModal')closeSensitiveModal()});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSensitiveModal();if(chat.classList.contains('open'))toggleChat();}});
+  </script>
+</body>
+</html>
